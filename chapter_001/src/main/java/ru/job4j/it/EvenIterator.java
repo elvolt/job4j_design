@@ -14,11 +14,11 @@ public class EvenIterator implements Iterator<Integer> {
         this.data = data;
     }
 
-    public static boolean isEven (int num) {
+    public static boolean isEven(int num) {
         return num % 2 == 0;
     }
 
-    public static List<Integer> getEvenNums (int[] nums) {
+    public static List<Integer> getEvenNums(int[] nums) {
         return Arrays.stream(nums)
                 .filter(EvenIterator::isEven)
                 .boxed()
