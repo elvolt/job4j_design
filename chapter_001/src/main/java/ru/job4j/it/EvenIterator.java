@@ -1,10 +1,6 @@
 package ru.job4j.it;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class EvenIterator implements Iterator<Integer> {
     private final int[] data;
@@ -14,20 +10,20 @@ public class EvenIterator implements Iterator<Integer> {
         this.data = data;
     }
 
-    public static boolean isEven(int num) {
-        return num % 2 == 0;
-    }
-
-    public static List<Integer> getEvenNums(int[] nums) {
-        return Arrays.stream(nums)
-                .filter(EvenIterator::isEven)
-                .boxed()
-                .collect(Collectors.toList());
+    public static int getNextEvenNumPoint(int cntPoint, int[] nums) {
+        int rsl = -1;
+        for (int i = cntPoint; i < nums.length; i++) {
+            if (nums[i] % 2 == 0) {
+                rsl = i;
+                break;
+            }
+        }
+        return rsl;
     }
 
     @Override
     public boolean hasNext() {
-        return point < getEvenNums(data).size();
+        return getNextEvenNumPoint(point, data) != -1;
     }
 
     @Override
@@ -35,6 +31,8 @@ public class EvenIterator implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return getEvenNums(data).get(point++);
+        int cntPoint = getNextEvenNumPoint(point, data);
+        point = cntPoint + 1;
+        return data[cntPoint];
     }
 }
