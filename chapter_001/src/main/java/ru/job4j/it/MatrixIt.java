@@ -12,9 +12,21 @@ public class MatrixIt implements Iterator<Integer> {
         this.data = data;
     }
 
+    public int getNextNotEmptyRow(int cntRow, int[][] data) {
+        int rsl = -1;
+        for (int i = cntRow; i < data.length; i++) {
+            if (data[i].length > 0) {
+                rsl = i;
+                break;
+            }
+        }
+        return rsl;
+    }
+
     @Override
     public boolean hasNext() {
-        return !(row == data.length - 1 && data[row].length == column);
+        int notEmptyRow = getNextNotEmptyRow(row, data);
+        return notEmptyRow != -1 && column <= data[row].length;
     }
 
     @Override
@@ -22,11 +34,22 @@ public class MatrixIt implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        if (column == data[row].length) {
-            row += 1;
-            column = 0;
-            return next();
+        int cntRow = row;
+        int cntColumn = column;
+        if (data[cntRow].length == 0) {
+            cntRow = getNextNotEmptyRow(cntRow, data);
+            cntColumn = 0;
         }
-        return data[row][column++];
+        if (data[cntRow].length - 1 == column) {
+            if (hasNext()) {
+                row = getNextNotEmptyRow(cntRow + 1, data);
+                column = 0;
+            } else {
+                row += 1;
+            }
+        } else {
+            column += 1;
+        }
+        return data[cntRow][cntColumn];
     }
 }
