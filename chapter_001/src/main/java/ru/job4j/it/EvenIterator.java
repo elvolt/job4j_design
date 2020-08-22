@@ -10,20 +10,15 @@ public class EvenIterator implements Iterator<Integer> {
         this.data = data;
     }
 
-    public static int getNextEvenNumPoint(int cntPoint, int[] nums) {
-        int rsl = -1;
-        for (int i = cntPoint; i < nums.length; i++) {
-            if (nums[i] % 2 == 0) {
-                rsl = i;
-                break;
-            }
-        }
-        return rsl;
-    }
-
     @Override
     public boolean hasNext() {
-        return getNextEvenNumPoint(point, data) != -1;
+        for (int i = point; i < data.length; i++) {
+            if (data[i] % 2 == 0) {
+                point = i;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -31,8 +26,6 @@ public class EvenIterator implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        int cntPoint = getNextEvenNumPoint(point, data);
-        point = cntPoint + 1;
-        return data[cntPoint];
+        return data[point++];
     }
 }
