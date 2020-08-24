@@ -76,4 +76,28 @@ public class SimpleLinkedListTest {
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next(), is(2));
     }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenDeleteLast() {
+        SimpleLinkedList<Integer> linked = new SimpleLinkedList<>();
+        linked.add(1);
+        linked.deleteLast();
+        linked.iterator().next();
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenDeleteLastEmptyLinked() {
+        SimpleLinkedList<Integer> linked = new SimpleLinkedList<>();
+        linked.deleteLast();
+    }
+
+    @Test
+    public void whenMultiDeleteLast() {
+        SimpleLinkedList<Integer> linked = new SimpleLinkedList<>();
+        linked.add(1);
+        linked.add(2);
+        assertThat(linked.deleteLast(), is(2));
+        Iterator<Integer> it = linked.iterator();
+        assertThat(it.next(), is(1));
+    }
 }
