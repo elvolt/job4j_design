@@ -85,6 +85,20 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         return result;
     }
 
+    public void revert() {
+        Node<T> cnt = first;
+        Node<T> newNext = null;
+        while (cnt != null) {
+            Node<T> tmp = cnt.next;
+            cnt.next = newNext;
+            newNext = cnt;
+            cnt = tmp;
+        }
+        Node<T> tmpFirst = first;
+        first = last;
+        last = tmpFirst;
+    }
+
     @Override
     public Iterator<T> iterator() {
         int expectedModCount = modCount;
