@@ -40,6 +40,22 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         return result.item;
     }
 
+    public void deleteFirst() {
+        if (first == null) {
+            throw new NoSuchElementException();
+        }
+        if (first.next == null) {
+            first = null;
+            last = null;
+        } else {
+            Node<T> cntFirst = first;
+            first = first.next;
+            cntFirst.next = null;
+        }
+        size -= 1;
+        modCount += 1;
+    }
+
     @Override
     public Iterator<T> iterator() {
         int expectedModCount = modCount;
