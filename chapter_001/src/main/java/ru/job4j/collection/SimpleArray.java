@@ -13,6 +13,10 @@ public class SimpleArray<T> implements Iterable<T> {
         array = (T[]) new Object[DEFAULT_SIZE];
     }
 
+    public int size() {
+        return size;
+    }
+
     private void checkSize() {
         if (size >= DEFAULT_SIZE && size % DEFAULT_SIZE == 0) {
             array = Arrays.copyOf(array, size + 10);
@@ -24,11 +28,12 @@ public class SimpleArray<T> implements Iterable<T> {
         return array[validatedIndex];
     }
 
-    public void add(T model) {
+    public boolean add(T model) {
         modCount += 1;
         array[size] = model;
         size += 1;
         checkSize();
+        return true;
     }
 
     @Override
