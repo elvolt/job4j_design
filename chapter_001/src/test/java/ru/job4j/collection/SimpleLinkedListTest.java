@@ -72,7 +72,7 @@ public class SimpleLinkedListTest {
         SimpleLinkedList<Integer> linked = new SimpleLinkedList<>();
         linked.add(1);
         linked.add(2);
-        linked.deleteFirst();
+        assertThat(linked.deleteFirst(), is(1));
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next(), is(2));
     }

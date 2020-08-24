@@ -40,10 +40,11 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         return result.item;
     }
 
-    public void deleteFirst() {
+    public T deleteFirst() {
         if (first == null) {
             throw new NoSuchElementException();
         }
+        T result = first.item;
         if (first.next == null) {
             first = null;
             last = null;
@@ -54,6 +55,7 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         }
         size -= 1;
         modCount += 1;
+        return result;
     }
 
     @Override
