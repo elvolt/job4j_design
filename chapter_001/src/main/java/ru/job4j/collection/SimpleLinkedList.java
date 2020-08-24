@@ -18,6 +18,10 @@ public class SimpleLinkedList<T> implements Iterable<T> {
         }
     }
 
+    public int size() {
+        return size;
+    }
+
     public void add(T value) {
         Node<T> cntLast = last;
         Node<T> newNode = new Node<>(value, null);
