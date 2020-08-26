@@ -2,12 +2,21 @@ package ru.job4j.collection;
 
 import java.util.*;
 
-public class SimpleSet<T> implements Iterable<T> {
-    private final SimpleArray<T> set = new SimpleArray<>();
+public class SimpleSet<E> implements Iterable<E> {
+    private final SimpleArray<E> set = new SimpleArray<>();
 
-    public boolean add(T value) {
+    public boolean contains(E value) {
+        for (E item : set) {
+            if (Objects.equals(item, value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean add(E value) {
         for (int i = 0; i < set.size(); i++) {
-            if (set.get(i).equals(value)) {
+            if (contains(value)) {
                 return false;
             }
         }
@@ -15,7 +24,7 @@ public class SimpleSet<T> implements Iterable<T> {
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<E> iterator() {
         return set.iterator();
     }
 }
