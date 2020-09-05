@@ -42,19 +42,27 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
         return (capacity - 1) & hash(key);
     }
 
-    private void resize() {
+    private Node<K, V>[] resize() {
+        Node<K, V>[] newTable;
         if (table == null) {
             capacity = DEFAULT_INITIAL_CAPACITY;
-            table = (Node<K, V>[]) new Node[capacity];
+            newTable = (Node<K, V>[]) new Node[capacity];
         } else {
             capacity = capacity << 1;
-            table = Arrays.copyOf(table, capacity);
+            newTable = (Node<K, V>[]) new Node[capacity];
+            for (Node<K, V> node : table) {
+                if (node != null) {
+                    int index = getIndex(node.getKey());
+                    newTable[index] = node;
+                }
+            }
         }
+        return newTable;
     }
 
     public boolean insert(K key, V value) {
         if (table == null || size > DEFAULT_LOAD_FACTOR * capacity) {
-            resize();
+            table = resize();
         }
         Node<K, V> n = new Node<>(hash(key), key, value);
         int index = getIndex(key);
@@ -70,7 +78,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     public V get(K key) {
         int index = getIndex(key);
         int validatedIndex = Objects.checkIndex(index, size);
-        if (table[validatedIndex] == null) {
+        if (table[validatedIndex] == null || !(table[validatedIndex].getKey().equals(key))) {
             return null;
         }
         return table[validatedIndex].getValue();
@@ -79,7 +87,7 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
     public boolean delete(K key) {
         int index = getIndex(key);
         int validatedIndex = Objects.checkIndex(index, size);
-        if (table[validatedIndex] == null) {
+        if (table[validatedIndex] == null || !(table[validatedIndex].getKey().equals(key))) {
             return false;
         }
         table[validatedIndex] = null;

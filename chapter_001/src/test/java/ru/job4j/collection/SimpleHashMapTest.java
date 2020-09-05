@@ -38,10 +38,8 @@ public class SimpleHashMapTest {
         map.insert(13, "n");
         map.insert(14, "o");
         map.insert(15, "p");
-        map.insert(16, "q");
-        map.insert(17, "r");
-        String rsl = map.get(17);
-        assertThat(rsl, is("r"));
+        String rsl = map.get(15);
+        assertThat(rsl, is("p"));
     }
 
     @Test
