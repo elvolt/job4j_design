@@ -5,31 +5,21 @@ import java.util.*;
 public class Analize {
     public Info diff(List<User> previous, List<User> current) {
         Info result = new Info();
-        Map<Integer, String> prevMap = new HashMap<>();
-        for (User u : previous) {
-            prevMap.put(u.id, u.name);
-        }
-        Map<Integer, String> currentMap = new HashMap<>();
+        Map<Integer, String> map = new HashMap<>();
         for (User u : current) {
-            currentMap.put(u.id, u.name);
+            map.put(u.id, u.name);
         }
-        Set<Integer> prevKeys = prevMap.keySet();
-        Set<Integer> currentKeys = currentMap.keySet();
-        Set<Integer> unionKeys = new HashSet<>(prevKeys);
-        unionKeys.addAll(currentKeys);
-        for (Integer key : unionKeys) {
-            if (prevMap.get(key) == null) {
-                result.added += 1;
-                continue;
-            }
-            if (currentMap.get(key) == null) {
+        for (User u : previous) {
+            if (map.get(u.id) == null) {
                 result.deleted += 1;
                 continue;
             }
-            if (!currentMap.get(key).equals(prevMap.get(key))) {
+            if (!map.get(u.id).equals(u.name)) {
                 result.changed += 1;
             }
+            map.remove(u.id);
         }
+        result.added = map.size();
         return result;
     }
 
