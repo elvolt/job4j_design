@@ -17,8 +17,23 @@ public class LogFilter {
         return lines;
     }
 
+    public static void save(List<String> log, String file) {
+        try (PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(file)
+                )
+        )) {
+            log.forEach(line -> {
+                line += System.lineSeparator();
+                out.write(line);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         List<String> log = filter("chapter_002\\log.txt");
-        System.out.println(log);
+        save(log, "chapter_002\\404.txt");
     }
 }
