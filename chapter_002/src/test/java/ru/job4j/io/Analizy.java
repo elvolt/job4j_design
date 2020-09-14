@@ -16,7 +16,7 @@ public class Analizy {
                      )
              )
         ) {
-            StringBuffer times = new StringBuffer();
+            StringBuilder times = new StringBuilder();
             boolean available = true;
             String line;
             while ((line = in.readLine()) != null) {
