@@ -17,6 +17,9 @@ public class ArgsName {
         }
         for (String arg : args) {
             String[] argKeyValue = arg.split("=");
+            if (argKeyValue.length != 2) {
+                throw new IllegalArgumentException("Argument " + argKeyValue[0] + " is incorrect");
+            }
             values.put(argKeyValue[0].substring(1), argKeyValue[1]);
         }
     }
