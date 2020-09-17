@@ -11,14 +11,19 @@ import java.util.function.Predicate;
 
 public class SearchFiles implements FileVisitor<Path> {
     private final Predicate<Path> predicate;
-    private final List<Path> filteredFiles = new ArrayList<>();
+    private final List<Path> filteredFilesNames = new ArrayList<>();
+    private final List<Path> filteredFilesAbsolutePaths = new ArrayList<>();
 
     public SearchFiles(Predicate<Path> predicate) {
         this.predicate = predicate;
     }
 
     public List<Path> getPaths() {
-        return filteredFiles;
+        return filteredFilesNames;
+    }
+
+    public List<Path> getAbsolutePaths() {
+        return filteredFilesAbsolutePaths;
     }
 
     @Override
@@ -29,7 +34,8 @@ public class SearchFiles implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         if (predicate.test(file)) {
-            filteredFiles.add(file.getFileName());
+            filteredFilesNames.add(file.getFileName());
+            filteredFilesAbsolutePaths.add(file.toAbsolutePath());
         }
         return FileVisitResult.CONTINUE;
     }
