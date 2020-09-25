@@ -27,10 +27,11 @@ public class EchoServer {
                             message = matcher.group().split("msg=")[1].trim();
                         }
                     }
-                    out.write("HTTP/1.1 200 OK\r\n\\".getBytes());
-                    if (message.equals("Buy")) {
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    if (message.equals("Exit")) {
                         break;
                     }
+                    out.write(message.getBytes());
                 }
             }
         }
