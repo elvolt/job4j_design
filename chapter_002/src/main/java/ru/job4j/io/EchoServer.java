@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 public class EchoServer {
     private static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
+    private static final Pattern MESSAGE_PATTERN = Pattern.compile("\\?msg=\\S+");
 
     public static void main(String[] args) {
         try {
@@ -25,10 +26,9 @@ public class EchoServer {
                                  new InputStreamReader(socket.getInputStream()))) {
                         String message = "";
                         String str;
-                        while (!(str = in.readLine()).isEmpty()) {
+                        while ((str = in.readLine()) != null && !str.isEmpty()) {
                             System.out.println(str);
-                            Pattern pattern = Pattern.compile("\\?msg=\\S+");
-                            Matcher matcher = pattern.matcher(str);
+                            Matcher matcher = MESSAGE_PATTERN.matcher(str);
                             while (matcher.find()) {
                                 message = matcher.group().split("msg=")[1].trim();
                             }
