@@ -3,7 +3,6 @@ package ru.job4j.io.chat;
 import java.io.*;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public class Chat {
     private static final String STOP_WORD = "Стоп";
@@ -50,9 +49,23 @@ public class Chat {
         loadToDispatch(FINISH_WORD, finish());
     }
 
-    public void checkUserText(String userText) {
+    private void checkUserText(String userText) {
         if (dispatch.containsKey(userText)) {
             dispatch.get(userText).accept(this);
+        }
+    }
+
+    private void writeToLog(List<String> logFile) {
+        try (PrintWriter writer = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(chatLog)
+                )
+        )) {
+            for (String logItem : logFile) {
+                writer.write(logItem + System.lineSeparator());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -72,16 +85,6 @@ public class Chat {
                 log.add("Bot: " + currentAnswer);
             }
         } while (chatActive);
-        try (PrintWriter writer = new PrintWriter(
-                new BufferedOutputStream(
-                        new FileOutputStream(chatLog)
-                )
-        )) {
-            for (String logItem : log) {
-                writer.write(logItem + System.lineSeparator());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeToLog(log);
     }
 }
