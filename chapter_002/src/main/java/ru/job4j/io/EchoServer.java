@@ -17,7 +17,6 @@ public class EchoServer {
     private static final Pattern MESSAGE_PATTERN = Pattern.compile("\\?msg=\\S+");
 
     public static void main(String[] args) {
-        try {
             try (ServerSocket server = new ServerSocket(9000)) {
                 while (true) {
                     Socket socket = server.accept();
@@ -40,9 +39,8 @@ public class EchoServer {
                         out.write(message.getBytes());
                     }
                 }
+            } catch (IOException e) {
+                LOG.error("Exception in main", e);
             }
-        } catch (IOException e) {
-            LOG.error("Exception in main", e);
-        }
     }
 }
