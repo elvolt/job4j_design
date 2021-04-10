@@ -1,22 +1,8 @@
 <?xml version="1.1" encoding="UTF-8" ?>
-<notebook>
-    <vendor>DELL</vendor>
-    <cpu>
-        <vendor>Intel</vendor>
-        <frequencyInMHz>3.2</frequencyInMHz>
-    </cpu>
+<notebook vendor="DELL" vendorCode="1234567" isNew="true">
+    <cpu vendor="Intel" frequencyInMHz="3.2"/>
     <drives>
-        <drive>
-            <vendor>Green</vendor>
-            <memoryInMB>512</memoryInMB>
-            <type>SSD</type>
-        </drive>
-        <drive>
-            <vendor>Samsung</vendor>
-            <memoryInMB>1024</memoryInMB>
-            <type>HDD</type>
-        </drive>
+        <drive vendor="Green" memoryInMB="512" type="SSD"/>
+        <drive vendor="Samsung" memoryInMB="1024" type="HDD"/>
     </drives>
-    <vendorCode>1234567</vendorCode>
-    <isNew>true</isNew>
 </notebook>
