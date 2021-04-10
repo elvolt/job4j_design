@@ -1,0 +1,22 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<notebook>
+    <vendor>DELL</vendor>
+    <cpu>
+        <vendor>Intel</vendor>
+        <frequencyInMHz>3.2</frequencyInMHz>
+    </cpu>
+    <drives>
+        <drive>
+            <vendor>Green</vendor>
+            <memoryInMB>512</memoryInMB>
+            <type>SSD</type>
+        </drive>
+        <drive>
+            <vendor>Samsung</vendor>
+            <memoryInMB>1024</memoryInMB>
+            <type>HDD</type>
+        </drive>
+    </drives>
+    <vendorCode>1234567</vendorCode>
+    <isNew>true</isNew>
+</notebook>
