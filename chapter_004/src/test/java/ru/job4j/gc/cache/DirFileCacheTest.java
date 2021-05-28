@@ -21,13 +21,19 @@ public class DirFileCacheTest {
         String dirPath = file.getParent();
         DirFileCache cache = new DirFileCache(dirPath);
         String expected = "OneTwo";
-        String result1 = cache.load(file.getName());
+        String key = file.getName();
+        cache.load(key);
+        String result1 = cache.get(key);
         assertEquals(expected, result1);
         try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
-            out.println("Three");
+            out.print("Three");
         }
-        String result2 = cache.load(file.getName());
+        String result2 = cache.get(key);
         assertEquals(expected, result2);
+        cache.load(key);
+        String result3 = cache.get(key);
+        String expected2 = "Three";
+        assertEquals(expected2, result3);
         file.deleteOnExit();
     }
 }

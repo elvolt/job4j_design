@@ -32,12 +32,8 @@ public class DirFileCache extends AbstractCache<String, String> {
 
     @Override
     protected String load(String key) {
-        String result = get(key);
-        if (result == null) {
-            String value = getFileContent(key);
-            put(key, value);
-            result = get(key);
-        }
-        return result;
+        String value = getFileContent(key);
+        put(key, value);
+        return value;
     }
 }
