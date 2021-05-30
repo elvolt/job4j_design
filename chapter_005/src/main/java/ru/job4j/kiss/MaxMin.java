@@ -3,32 +3,25 @@ package ru.job4j.kiss;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 public class MaxMin {
-    private <T> List<T> getSortedCollection(List<T> collection, Comparator<T> comparator) {
-        List<T> collectionCopy = new ArrayList<>(collection);
-        for (int out = collectionCopy.size() - 1; out > 0; out--) {
-            for (int in = 0; in < out; in++) {
-                if (comparator.compare(collectionCopy.get(in), collectionCopy.get(in + 1)) > 0) {
-                    swap(collectionCopy, in, in + 1);
-                }
+    private <T> T findItemBy(List<T> collection, BiPredicate<T, T> predicate) {
+        T result = collection.get(0);
+        for (T item : collection) {
+            if (predicate.test(item, result)) {
+                result = item;
             }
         }
-        return collectionCopy;
-    }
-
-    private <T> void swap(List<T> collection, int index1, int index2) {
-        T tmp = collection.get(index2);
-        collection.set(index2, collection.get(index1));
-        collection.set(index1, tmp);
+        return result;
     }
 
     public <T> T max(List<T> value, Comparator<T> comparator) {
-        return getSortedCollection(value, comparator).get(value.size() - 1);
+        return findItemBy(value, (a, b) -> comparator.compare(a, b) > 0);
     }
 
     public <T> T min(List<T> value, Comparator<T> comparator) {
-        return getSortedCollection(value, comparator).get(0);
+        return findItemBy(value, (a, b) -> comparator.compare(a, b) < 0);
     }
 
     public static void main(String[] args) {
