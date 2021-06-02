@@ -6,7 +6,9 @@ import java.util.Map;
 
 public abstract class AbstractCache<K, V> {
 
+    //CHECKSTYLE:OFF
     protected final Map<K, SoftReference<V>> cache = new HashMap<>();
+    //CHECKSTYLE:ON
 
     public void put(K key, V value) {
         SoftReference<V> softValue = new SoftReference<>(value);
@@ -17,9 +19,9 @@ public abstract class AbstractCache<K, V> {
         if (!cache.containsKey(key)) {
             load(key);
         }
-        return cache.get(key).get();
+        V value = cache.get(key).get();
+        return value;
     }
 
     protected abstract V load(K key);
-
 }
