@@ -10,4 +10,9 @@ public interface Employee {
     void getRole();
 
     BigDecimal calculateSalary();
+
+    /*
+        Нарушение принципа SRP, т.к. calculateSalary -
+        это ответсвенность отдела бухгалтерии
+    */
 }
