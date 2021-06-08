@@ -1,14 +1,12 @@
 package ru.job4j.io.puzzle;
 
-public class Shell {
-    private String workingDirectory = "/";
+import java.util.*;
 
-    private String normalize(String path) {
-        return path
-                // replace "./" in path
-                .replaceAll("/\\./", "")
-                // replace ".." in path
-                .replaceAll("/\\w*/\\.\\.", "/")
+public class Shell {
+    private Deque<String> pathsStack = new ArrayDeque<>();
+
+    private String normalizePath(String path) {
+        return path.toLowerCase()
                 // replace multiple "//" in path
                 .replaceAll("/{2,}", "/")
                 // remove last "/" if path contains it
@@ -16,15 +14,37 @@ public class Shell {
     }
 
     public Shell cd(String path) {
-        if (path.startsWith("/")) {
-            workingDirectory = normalize(path);
+        String normalizedPath = normalizePath(path);
+        if (normalizedPath.startsWith("/")) {
+            String[] paths = normalizedPath.substring(1).split("/");
+            Deque<String> newStack = new ArrayDeque<>();
+            Arrays.stream(paths).forEach(newStack::push);
+            pathsStack = newStack;
         } else {
-            workingDirectory = normalize(workingDirectory + "/" + path);
+            String[] paths = normalizedPath.split("/");
+            for (String p : paths) {
+                if (p.equals("..")) {
+                    pathsStack.pop();
+                    continue;
+                }
+                if (p.equals(".")) {
+                    continue;
+                }
+                pathsStack.push(p);
+            }
         }
         return this;
     }
 
     public String path() {
-        return workingDirectory;
+        if (pathsStack.size() == 0) {
+            return "/";
+        }
+        List<String> paths = new ArrayList<>(pathsStack.size());
+        Iterator<String> iterator = pathsStack.descendingIterator();
+        while (iterator.hasNext()) {
+            paths.add("/" + iterator.next());
+        }
+        return String.join("", paths);
     }
 }
