@@ -2,7 +2,9 @@ package ru.job4j.design.srp;
 
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -88,6 +90,64 @@ public class ReportTest {
                 .append(worker1.getName()).append(";")
                 .append(worker1.getSalary()).append(";")
                 .append(System.lineSeparator());
+        assertThat(engine.generate(em -> true), is(expect.toString()));
+    }
+
+    @Test
+    public void whenReportXmlThenGenerated() {
+        MemStore store = new MemStore();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, Calendar.FEBRUARY, 4);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        String dateString = formatter.format(date.getTime());
+        Employee worker1 = new Employee("Ivan", date, date, 70);
+        Employee worker2 = new Employee("Petr", date, date, 150);
+        Employee worker3 = new Employee("Pavel", date, date, 100);
+        store.add(worker1);
+        store.add(worker2);
+        store.add(worker3);
+        Report engine = new ReportXml(store);
+        String employeeXmlTemplate =
+                "<employee name=\"%s\" hired=\"%s\" fired=\"%s\" salary=\"%.1f\"/>";
+        StringBuilder expect = new StringBuilder()
+                .append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
+                .append("<employees>")
+                .append(String.format(Locale.US, employeeXmlTemplate,
+                        worker1.getName(), dateString, dateString, worker1.getSalary()))
+                .append(String.format(Locale.US, employeeXmlTemplate,
+                        worker2.getName(), dateString, dateString, worker2.getSalary()))
+                .append(String.format(Locale.US, employeeXmlTemplate,
+                        worker3.getName(), dateString, dateString, worker3.getSalary()))
+                .append("</employees>");
+        String result = engine.generate(em -> true).replaceAll("\\n\\s*", "");
+        assertThat(result, is(expect.toString()));
+    }
+
+    @Test
+    public void whenReportJsonThenGenerated() {
+        MemStore store = new MemStore();
+        Calendar date = Calendar.getInstance();
+        date.set(2020, Calendar.FEBRUARY, 4);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss X");
+        String dateString = formatter.format(date.getTime());
+        Employee worker1 = new Employee("Ivan", date, date, 70);
+        Employee worker2 = new Employee("Petr", date, date, 150);
+        Employee worker3 = new Employee("Pavel", date, date, 100);
+        store.add(worker1);
+        store.add(worker2);
+        store.add(worker3);
+        Report engine = new ReportJson(store);
+        String employeeJsonTemplate =
+                "{\"name\":\"%s\",\"hired\":\"%s\",\"fired\":\"%s\",\"salary\":%.1f}";
+        StringBuilder expect = new StringBuilder()
+                .append("{\"employees\":[")
+                .append(String.format(Locale.US, employeeJsonTemplate + ",",
+                        worker1.getName(), dateString, dateString, worker1.getSalary()))
+                .append(String.format(Locale.US, employeeJsonTemplate + ",",
+                        worker2.getName(), dateString, dateString, worker2.getSalary()))
+                .append(String.format(Locale.US, employeeJsonTemplate,
+                        worker3.getName(), dateString, dateString, worker3.getSalary()))
+                .append("]}");
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
 }
