@@ -1,10 +1,12 @@
 package ru.job4j.parking;
 
+import java.util.Optional;
+
 public interface CarParking {
 
-    boolean add(Car car);
+    boolean add(ParkedCar car);
 
-    boolean remove(Car car);
+    boolean remove(ParkedCar car);
 
-    Car findCarByParkingSpaceNumber(String spaceNumber);
+    Optional<ParkedCar> findCarByParkingSpaceNumber(String spaceNumber);
 }

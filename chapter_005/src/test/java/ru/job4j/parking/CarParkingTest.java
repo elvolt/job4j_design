@@ -1,78 +1,83 @@
 package ru.job4j.parking;
 
-import org.junit.Ignore;
 import org.junit.Test;
-import ru.job4j.tdd.ShopParking;
+
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
 public class CarParkingTest {
-    @Ignore
     @Test
     public void whenSpaceForCarNotEnough() {
-        Car car1 = new Ford(1);
-        Car car2 = new Ford(1);
+        ParkedCar car1 = new Ford(1);
+        ParkedCar car2 = new Ford(1);
         CarParking shopParking = new ShopParking(1, 1);
         assertTrue(shopParking.add(car1));
         assertFalse(shopParking.add(car2));
     }
 
-    @Ignore
     @Test
     public void whenSpaceForTruckOnParkingForSmallCarsNotEnough() {
-        Car car = new Ford(3);
+        ParkedCar car = new Ford(3);
         CarParking shopParking = new ShopParking(1, 0);
         assertFalse(shopParking.add(car));
     }
 
-    @Ignore
     @Test
     public void whenSmallCarParked() {
-        Car car = new Ford(1);
+        ParkedCar car = new Ford(1);
         CarParking shopParking = new ShopParking(1, 1);
         shopParking.add(car);
-        String parkingSpaceNumber = car.getParkingSpaceNumber();
+        String parkingSpaceNumber = car.getParkingSpaceNumber().get();
         assertEquals("S1", parkingSpaceNumber);
-        assertEquals(car, shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber));
+        assertEquals(car, shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber).get());
     }
 
-    @Ignore
     @Test
     public void whenTruckParked() {
-        Car car = new Ford(2);
+        ParkedCar car = new Ford(2);
         CarParking shopParking = new ShopParking(1, 1);
         shopParking.add(car);
-        String parkingSpaceNumber = car.getParkingSpaceNumber();
+        String parkingSpaceNumber = car.getParkingSpaceNumber().get();
         assertEquals("T1", parkingSpaceNumber);
-        assertEquals(car, shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber));
+        assertEquals(car, shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber).get());
     }
 
-    @Ignore
     @Test
     public void whenTruckParkedOnParkingForSmallCars() {
-        Car car = new Ford(2);
-        CarParking shopParking = new ShopParking(2, 0);
-        shopParking.add(car);
-        String parkingSpaceNumber = car.getParkingSpaceNumber();
-        assertEquals("S1S2", parkingSpaceNumber);
-        assertEquals(car, shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber));
+        ParkedCar smallCar = new Ford(1);
+        ParkedCar truck = new Ford(2);
+        CarParking shopParking = new ShopParking(3, 0);
+        shopParking.add(smallCar);
+        shopParking.add(truck);
+        String parkingSpaceNumber = truck.getParkingSpaceNumber().get();
+        assertEquals("S2S3", parkingSpaceNumber);
+        assertEquals(truck, shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber).get());
     }
 
-    @Ignore
     @Test
-    public void whenRemoveCarFromParking() {
-        Car car = new Ford(1);
+    public void whenRemoveSmallCarFromParking() {
+        ParkedCar car = new Ford(1);
         CarParking shopParking = new ShopParking(1, 1);
         shopParking.add(car);
-        String parkingSpaceNumber = car.getParkingSpaceNumber();
+        String parkingSpaceNumber = car.getParkingSpaceNumber().get();
         shopParking.remove(car);
-        assertNull(shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber));
+        assertEquals(Optional.empty(), shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber));
     }
 
-    @Ignore
+    @Test
+    public void whenRemoveTruckFromParking() {
+        ParkedCar car = new Ford(3);
+        CarParking shopParking = new ShopParking(3, 0);
+        shopParking.add(car);
+        String parkingSpaceNumber = car.getParkingSpaceNumber().get();
+        shopParking.remove(car);
+        assertEquals(Optional.empty(), shopParking.findCarByParkingSpaceNumber(parkingSpaceNumber));
+    }
+
     @Test
     public void whenRemoveCarAndCarNotExists() {
-        Car car = new Ford(1);
+        ParkedCar car = new Ford(1);
         CarParking shopParking = new ShopParking(1, 1);
         assertFalse(shopParking.remove(car));
     }

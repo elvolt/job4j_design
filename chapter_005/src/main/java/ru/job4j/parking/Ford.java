@@ -1,7 +1,10 @@
 package ru.job4j.parking;
 
-public class Ford implements Car {
+import java.util.Optional;
+
+public class Ford implements ParkedCar {
     private final int size;
+    private String parkingSpaceNumber;
 
     public Ford(int size) {
         this.size = size;
@@ -14,11 +17,11 @@ public class Ford implements Car {
 
     @Override
     public void setParkingSpaceNumber(String parkingSpaceNumber) {
-
+        this.parkingSpaceNumber = parkingSpaceNumber;
     }
 
     @Override
-    public String getParkingSpaceNumber() {
-        return null;
+    public Optional<String> getParkingSpaceNumber() {
+        return Optional.ofNullable(parkingSpaceNumber);
     }
 }
