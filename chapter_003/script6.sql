@@ -62,17 +62,11 @@ VALUES (1, 1, 'rejected'),
 
 --Нужно написать запрос, который получит список всех заявок
 -- и количество подтвердивших участников.
-SELECT t1.name, t1.all_applications, t2.confirmed_applications
-FROM (SELECT m.name, COUNT(a.id) as all_applications
-      FROM meetings m
-               JOIN applications a on m.id = a.meeting_id
-      GROUP BY m.name) t1
-         JOIN
-     (SELECT m.name, COUNT(a.id) as confirmed_applications
-      FROM meetings m
-               JOIN applications a on m.id = a.meeting_id
-      WHERE a.user_status = 'confirmed'
-      GROUP BY m.name) t2 ON t2.name = t1.name;
+SELECT m.name, COUNT(a.id) as confirmed_applications
+FROM meetings m
+         JOIN applications a on m.id = a.meeting_id
+WHERE a.user_status = 'confirmed'
+GROUP BY m.name;
 
 --Нужно получить все совещания, где не было ни одной заявки на посещения
 SELECT meetings.name
