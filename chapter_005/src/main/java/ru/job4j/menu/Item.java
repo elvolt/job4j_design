@@ -1,48 +1,18 @@
 package ru.job4j.menu;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
-public class Item implements IItem {
-    private final String name;
-    private final List<IItem> subItems = new ArrayList<>();
+public interface Item {
+    String getName();
 
-    public Item(String name) {
-        this.name = name;
-    }
+    List<Item> getSubItems();
 
-    @Override
-    public String getName() {
-        return name;
-    }
+    boolean addSubItem(Item item);
 
-    @Override
-    public List<IItem> getSubItems() {
-        return subItems;
-    }
+    boolean removeSubItem(Item item);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Item item = (Item) o;
-        return Objects.equals(name, item.name);
-    }
+    Optional<Item> getParent();
 
-    @Override
-    public int hashCode() {
-        return name != null ? name.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Item{"
-                + "name='" + name + '\''
-                + '}';
-    }
+    void setParent(Item parent);
 }

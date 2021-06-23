@@ -2,17 +2,17 @@ package ru.job4j.menu;
 
 import java.util.List;
 
-public class StartUI implements IMenuUI {
+public class StartUI implements MenuUI {
     private static final String SEPARATOR = "--";
-    private final IMenu menu;
+    private final Menu menu;
     private final Output out;
 
-    public StartUI(IMenu menu, Output out) {
+    public StartUI(Menu menu, Output out) {
         this.menu = menu;
         this.out = out;
     }
 
-    private String printSubItems(int level, List<IItem> items) {
+    private String printSubItems(int level, List<Item> items) {
         StringBuilder result = new StringBuilder();
         items.forEach(item -> {
             int nestedLevel = level;

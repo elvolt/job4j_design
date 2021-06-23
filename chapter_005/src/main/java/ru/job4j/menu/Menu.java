@@ -1,63 +1,18 @@
 package ru.job4j.menu;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-public class Menu implements IMenu {
-    private final List<IItem> items = new ArrayList<>();
+public interface Menu {
+    List<Item> getItems();
 
-    @Override
-    public List<IItem> getItems() {
-        return items;
-    }
+    void addItem(Item item);
 
-    @Override
-    public void addItem(IItem item) {
-        items.add(item);
-    }
+    boolean addSubItem(Item parent, Item child);
 
-    @Override
-    public boolean addSubItem(IItem parent, IItem child) {
-        Optional<IItem> parentItem = getItem(parent);
-        if (parentItem.isEmpty()) {
-            return false;
-        }
-        parentItem.get().getSubItems().add(child);
-        return true;
-    }
+    Optional<Item> getItem(Item item);
 
-    @Override
-    public Optional<IItem> getItem(IItem item) {
-        Optional<IItem> result = Optional.empty();
-        Queue<IItem> data = new LinkedList<>();
-        for (IItem i : items) {
-            data.offer(i);
-            while (!data.isEmpty()) {
-                IItem head = data.poll();
-                if (head.equals(item)) {
-                    result = Optional.of(head);
-                    break;
-                }
-                data.addAll(i.getSubItems());
-            }
-            if (result.isPresent()) {
-                break;
-            }
-        }
-        return result;
-    }
+    boolean removeItem(Item item);
 
-    @Override
-    public boolean removeItem(IItem item) {
-        Optional<IItem> removedItem = getItem(item);
-        if (removedItem.isEmpty()) {
-            return false;
-        }
-        removedItem.get().getSubItems().clear();
-        return items.remove(item);
-    }
-
-    @Override
-    public void action(IItem item) {
-        System.out.println("Do action with " + item.getName());
-    }
+    void action(Item item);
 }

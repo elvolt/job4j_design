@@ -8,18 +8,18 @@ public class StartUITest {
     @Test
     public void whenAddMenuItemsWithSubItems() {
         Output out = new StubOutput();
-        IItem item1 = new Item("1. Task");
-        IItem subItem1 = new Item("1.1 Task");
-        IItem subItem2 = new Item("1.1.1 Task");
-        IItem subItem3 = new Item("1.2 Task");
-        IItem item2 = new Item("2. Task");
-        IMenu menu = new Menu();
+        Item item1 = new SimpleItem("1. Task");
+        Item subItem1 = new SimpleItem("1.1 Task");
+        Item subItem2 = new SimpleItem("1.1.1 Task");
+        Item subItem3 = new SimpleItem("1.2 Task");
+        Item item2 = new SimpleItem("2. Task");
+        Menu menu = new SimpleMenu();
         menu.addItem(item1);
         menu.addItem(item2);
         menu.addSubItem(item1, subItem1);
         menu.addSubItem(item1, subItem3);
         menu.addSubItem(subItem1, subItem2);
-        IMenuUI ui = new StartUI(menu, out);
+        MenuUI ui = new StartUI(menu, out);
         ui.showMenu();
         String expected = item1.getName() + System.lineSeparator()
                 + "--" + subItem1.getName() + System.lineSeparator()

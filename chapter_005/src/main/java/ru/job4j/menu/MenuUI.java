@@ -1,5 +1,5 @@
 package ru.job4j.menu;
 
-public interface IMenuUI {
+public interface MenuUI {
     void showMenu();
 }
