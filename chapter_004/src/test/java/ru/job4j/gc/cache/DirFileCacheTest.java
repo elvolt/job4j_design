@@ -22,7 +22,8 @@ public class DirFileCacheTest {
         DirFileCache cache = new DirFileCache(dirPath);
         String expected = "OneTwo";
         String key = file.getName();
-        cache.load(key);
+        String content = cache.load(key);
+        cache.put(key, content);
         String result1 = cache.get(key);
         assertEquals(expected, result1);
         try (PrintWriter out = new PrintWriter(new FileWriter(file))) {
@@ -30,7 +31,8 @@ public class DirFileCacheTest {
         }
         String result2 = cache.get(key);
         assertEquals(expected, result2);
-        cache.load(key);
+        String content2 = cache.load(key);
+        cache.put(key, content2);
         String result3 = cache.get(key);
         String expected2 = "Three";
         assertEquals(expected2, result3);

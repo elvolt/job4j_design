@@ -17,11 +17,13 @@ public abstract class AbstractCache<K, V> {
 
     public V get(K key) {
         if (!cache.containsKey(key)) {
-            load(key);
+            V content = load(key);
+            put(key, content);
         }
         V strongReference = cache.get(key).get();
         if (strongReference == null) {
-            load(key);
+            V content = load(key);
+            put(key, content);
             return get(key);
         }
         return strongReference;

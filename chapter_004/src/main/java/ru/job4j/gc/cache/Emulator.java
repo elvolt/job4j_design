@@ -8,7 +8,8 @@ public class Emulator {
     }
 
     public void loadToCache(String filename) {
-        cache.load(filename);
+        String content = cache.load(filename);
+        cache.put(filename, content);
     }
 
     public String getFromCache(String filename) {

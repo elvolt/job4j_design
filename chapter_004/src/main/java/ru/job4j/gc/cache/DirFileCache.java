@@ -10,9 +10,10 @@ public class DirFileCache extends AbstractCache<String, String> {
         this.cachingDir = cachingDir;
     }
 
-    private String getFileContent(String filename) {
+    @Override
+    protected String load(String key) {
         StringBuilder result = new StringBuilder();
-        File file = new File(cachingDir + File.separator + filename);
+        File file = new File(cachingDir + File.separator + key);
         if (!file.exists()) {
             throw new IllegalArgumentException("File not exists");
         }
@@ -28,12 +29,5 @@ public class DirFileCache extends AbstractCache<String, String> {
             e.printStackTrace();
         }
         return result.toString();
-    }
-
-    @Override
-    protected String load(String key) {
-        String value = getFileContent(key);
-        put(key, value);
-        return value;
     }
 }
