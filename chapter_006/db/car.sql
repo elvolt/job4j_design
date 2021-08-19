@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS c_mark
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS c_model
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+)
+
