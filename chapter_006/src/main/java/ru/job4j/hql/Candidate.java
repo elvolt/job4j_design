@@ -12,6 +12,8 @@ public class Candidate {
     private String name;
     private int experience;
     private BigDecimal salary;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Base base;
 
     public Candidate() {
     }
@@ -81,6 +83,7 @@ public class Candidate {
                 + ", name='" + name + '\''
                 + ", experience=" + experience
                 + ", salary=" + salary
+                + ", base=" + base
                 + '}';
     }
 }
