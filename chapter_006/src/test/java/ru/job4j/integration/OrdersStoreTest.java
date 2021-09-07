@@ -5,18 +5,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class OrdersStoreTest {
-    private BasicDataSource pool = new BasicDataSource();
+    private final BasicDataSource pool = new BasicDataSource();
 
     @Before
     public void setUp() throws SQLException {
@@ -26,10 +24,15 @@ public class OrdersStoreTest {
         pool.setPassword("");
         pool.setMaxTotal(2);
         StringBuilder builder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(new FileInputStream("./db/update_001.sql")))
+
+        try (BufferedInputStream bi = new BufferedInputStream(
+                Objects.requireNonNull(
+                        getClass().getClassLoader().getResourceAsStream("update_001.sql")))
         ) {
-            br.lines().forEach(line -> builder.append(line).append(System.lineSeparator()));
+            int read;
+            while ((read = bi.read()) != -1) {
+                builder.append((char) read);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
